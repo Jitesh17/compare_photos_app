@@ -32,6 +32,10 @@ def main():
 
     st.set_page_config(page_title='Compare Photos ' +
                        u'\U0001F5BC', page_icon=u'\U0001F5BC', layout="wide")
+
+    if os.environ.get('DISPLAY','') == '':
+        print('no display found. Using :0.0')
+        os.environ.__setitem__('DISPLAY', ':0.0')
     # print(emoji.emojize(':framed_picture:'))
 
     container_input = st.sidebar.container()
