@@ -3,30 +3,30 @@ import os
 import streamlit as st
 from PIL import Image
 
-# import tkinter as tk
-# from tkinter import filedialog
+import tkinter as tk
+from tkinter import filedialog
 
 # # import emoji
 # # from matplotlib import container
 
 
 # # favicon = "man-man-girl-girl"
-# def pick_folder(container, key):
-#     # Set up tkinter
-#     root = tk.Tk()
-#     root.withdraw()
+def pick_folder(container, key):
+    # Set up tkinter
+    root = tk.Tk()
+    root.withdraw()
 
-#     # Make folder picker dialog appear on top of other windows
-#     root.wm_attributes('-topmost', 1)
+    # Make folder picker dialog appear on top of other windows
+    root.wm_attributes('-topmost', 1)
 
-#     # Folder picker button
-#     # container.text('Folder Picker')
-#     container.write(f'Please select a folder ({key}):')
-#     clicked = container.button('Folder Picker', key=f"Folder Picker button {key}")
-#     dirname = None
-#     if clicked:
-#         dirname = container.text_input('Selected folder:', filedialog.askdirectory(master=root))
-#         return dirname
+    # Folder picker button
+    # container.text('Folder Picker')
+    container.write(f'Please select a folder ({key}):')
+    clicked = container.button('Folder Picker', key=f"Folder Picker button {key}")
+    dirname = None
+    if clicked:
+        dirname = container.text_input('Selected folder:', filedialog.askdirectory(master=root), key=f"dirname input {key}")
+        return dirname
 
 def main():
 
@@ -44,27 +44,32 @@ def main():
     container_images = st.container()
     container_images_dict = {}
     image_path_dict = {}
+    dirname_dict = {}
     max_length = 0
+    for row in range(row_num):
+        for col in range(column_num):
+            idx = row*column_num + col
+            image_path_dict[idx] = {"len": 0}
     for row in range(row_num):
         cols = container_images.columns(column_num)
         for col, container_col in enumerate(cols):
             idx = row*column_num + col
-            key = str(idx)
+            key = f"{idx}"
             container_images_dict[idx] = container_col
             if idx >= num_directories:
                 break
-            # dirname = pick_folder(container_col, key=f"{row=}, {col=}")
-            dirname = None
-            dirname = container_col.text_input(
-                "directory", key=f"directory path {key}")
-            image_path_dict[idx] = {"len": 0}
-            if dirname is not None and dirname != "":
-                # container_col.write(f"{dirname=}")
-                # container_col.write(f"{os.listdir(dirname)=}")
-                onlyfiles = [f for f in os.listdir(dirname) if os.path.isfile(
-                    os.path.join(dirname, f)) and f.split('.')[-1] in ["jpg", "jpeg", "png"]]
+            dirname_dict[key] = pick_folder(container_col, key=f"{row=}, {col=}")
+            # dirname_dict[key] = None
+            # dirname_dict[key] = container_col.text_input(
+                # "directory", key=f"directory path {key}")
+            # image_path_dict[idx] = {"len": 0}
+            if dirname_dict[key] is not None and dirname_dict[key] != "":
+                # container_col.write(f"{dirname_dict[key]=}")
+                # container_col.write(f"{os.listdir(dirname_dict[key])=}")
+                onlyfiles = [f for f in os.listdir(dirname_dict[key]) if os.path.isfile(
+                    os.path.join(dirname_dict[key], f)) and f.split('.')[-1] in ["jpg", "jpeg", "png"]]
                 # container_col.write(f"{onlyfiles=}")
-                image_path_dict[idx]["dirname"] = dirname
+                image_path_dict[idx]["dirname"] = dirname_dict[key]
                 image_path_dict[row*column_num +
                                 col]["filename"] = sorted(onlyfiles)
                 image_path_dict[idx]["len"] = len(onlyfiles)
