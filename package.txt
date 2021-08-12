@@ -1,2 +1,3 @@
 tk
+tk-dev
 python3-tk
