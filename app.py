@@ -10,7 +10,6 @@ from tkinter import filedialog
 # # from matplotlib import container
 
 
-# # favicon = "man-man-girl-girl"
 def pick_folder(container, key):
     # Set up tkinter
     root = tk.Tk()
@@ -28,14 +27,15 @@ def pick_folder(container, key):
         dirname = container.text_input('Selected folder:', filedialog.askdirectory(master=root), key=f"dirname input {key}")
         return dirname
 
+
 def main():
 
     st.set_page_config(page_title='Compare Photos ' +
                        u'\U0001F5BC', page_icon=u'\U0001F5BC', layout="wide")
 
-    if os.environ.get('DISPLAY','') == '':
-        print('no display found. Using :0.0')
-        os.environ.__setitem__('DISPLAY', ':0.0')
+    # if os.environ.get('DISPLAY','') == '':
+    #     print('no display found. Using :0.0')
+    #     os.environ.__setitem__('DISPLAY', ':0.0')
     # print(emoji.emojize(':framed_picture:'))
 
     container_input = st.sidebar.container()
@@ -65,7 +65,7 @@ def main():
             dirname_dict[key] = pick_folder(container_col, key=f"{row=}, {col=}")
             # dirname_dict[key] = None
             # dirname_dict[key] = container_col.text_input(
-                # "directory", key=f"directory path {key}")
+            # "directory", key=f"directory path {key}")
             # image_path_dict[idx] = {"len": 0}
             if dirname_dict[key] is not None and dirname_dict[key] != "":
                 # container_col.write(f"{dirname_dict[key]=}")
@@ -97,9 +97,9 @@ def main():
                     container_images_dict[idx].header(
                         f'{image_path_dict[idx]["filename"][num-1]} {key=}')
                     container_images_dict[idx].image(im,
-                                                                      # width=zoom_img,
-                                                                      use_column_width=True
-                                                                      )
+                                                     # width=zoom_img,
+                                                     use_column_width=True
+                                                     )
 
 
 if __name__ == '__main__':
